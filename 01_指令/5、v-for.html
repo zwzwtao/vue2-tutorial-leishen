@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <!-- v-if="user.gender=='female'只显示性别为female的user -->
+            <li v-for="(user,index) in users" :key="user.name" v-if="user.gender=='female'">
+                <!-- 1、显示user信息: v-for="item in items"，如果写成组合的形式，会自动将第二个位置识别为index（index名字可以随便取）并输出，v-for="(item,index) in items" -->
+                {{index}}(这个是索引) {{user.name}} ==> {{user.gender}} ==> {{user.age}} <br>
+                <!-- 2、获取数组下标: v-for="(item,index)" in items -->
+                <!-- 3、遍历对象：
+                        v-for="value in object"
+                        v-for="(value,key) in object"
+                        v-for="(value,key,index) in object"
+                -->
+                <!-- 当前遍历的是user对象，注意这是嵌套了，外面还有一个users -->
+                <span v-for="(v,k,i) in user">{{k}}==>{{v}}==>{{i}}; </span>
+                <!-- 4、遍历的时候都加上:key来区分不同数据，提高vue渲染效率 -->
+            </li>
+        </ul>
+
+        <ul>
+            <li v-for="(num,index) in nums" :key="index">{{num}}</li>
+        </ul>
+    </div>
+
+    <script src="../node_modules/vue/dist/vue.js"></script>
+
+    <script>
+        let app = new Vue({
+            el: "#app",
+            data: {
+                users: [{ name: "odas1", gender: "female", age: 21 },
+                { name: "odas2", gender: "female", age: 22 },
+                { name: "odas3", gender: "male", age: 23 },
+                { name: "odas4", gender: "female", age: 24 },
+                { name: "odas5", gender: "female", age: 25 }
+                ],
+                nums: [1, 2, 3, 4, 3]
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 某些结果是基于之前数据实时计算出来的，我们可以利用计算属性来完成 -->
+        <ul>
+            <li>西游记 价格: {{xyjPrice}}, 数量: <input type="number" v-model="xyjNum"></li>
+            <li>水浒传 价格: {{shzPrice}}, 数量: <input type="number" v-model="shzNum"></li>
+            <li>总价: {{totalPrice}}</li>
+            {{msg}}
+        </ul>
+    </div>
+
+    <script src="../node_modules/vue/dist/vue.js"></script>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                xyjPrice: 99.98,
+                shzPrice: 98.00,
+                xyjNum: 1,
+                shzNum: 1,
+                msg: ""
+            },
+            // 所有需要动态计算的属性都可以写在computed里，在computed里的值，只要有任何一个发生变化
+            // 都会触发重新计算
+            computed: {
+                totalPrice() {
+                    return this.xyjPrice * this.xyjNum + this.shzPrice * this.shzNum;
+                }
+            },
+            watch: {
+                // 想要监控哪个属性就写在这里，固定套路，比如这里我们写上xyjNum，这个xyjNum是一个方法(function)
+                // 这个方法传入两个参数，前面的参数是新值，后面的参数是旧值
+                // 一旦xyjNum的值发生变化，function会自动触发
+                xyjNum(newVal, oldVal) {
+                    alert("oldVal: " + oldVal + " ==> newVal: " + newVal);
+                    if (newVal > 3) {
+                        this.msg = "库存超出限制";     
+                        // 这里限制一下让xyjNum不能增加，但是又不能限制到3，因为如果xyjNum变成3
+                        // 又会触发else条件，导致msg变为空，会无法显示"库存超出限制"
+                        this.xyjNum = 4;                 
+                    } else {
+                        this.msg = "";
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

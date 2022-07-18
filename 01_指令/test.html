@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        class FileInput extends React.Component {
+            constructor(props) {
+                super(props);
+                this.fileInput = React.createRef();
+            }
+
+            upload = () => {
+                const data = new FormData();
+                data.append('files', this.fileInput.current.files[0]);  //相当于 input:file 中的name属性
+                fetch('http://108.61.184.224:8081/dysmash/api/rental/tolling-form-from-pdf', {
+                    method: 'POST',
+                    headers: {
+                        
+                        "token": "f758abd635c64847ae0e33706900f28d"
+                    },
+                    body: data
+                }).then(response => console.log(response))
+            };
+
+            render() {
+                // highlight-range{5}
+                return (
+                    <div>
+                        <input type="file" name='files' ref={this.fileInput} />
+                        <input type="button" value="上传" onClick={this.upload} />
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <FileInput />,
+            document.getElementById('root')
+        );
+
+
+    </script>
+</body>
+
+</html>

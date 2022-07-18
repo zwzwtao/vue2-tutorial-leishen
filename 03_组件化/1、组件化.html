@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="count++">我被点击了 {{count}} 次</button>
+
+        <!-- 想要用组件只要写一个标签即可 -->
+        <counter></counter>
+        <counter></counter>
+
+        <button-counter></button-counter>
+    </div>
+
+    <script src="../node_modules/vue/dist/vue.js"></script>
+
+    <script>
+        // 1. 全局声明一个组件
+        Vue.component("counter", {
+            // 定义一个html模板，组件会和这个模板绑定，然后这个模板就可以到处被覆用啦
+            template: `<button v-on:click="count++">我被点击了 {{count}} 次</button>`,
+            // data必须写成一个方法，其实和创建一个vue实例挺像的
+            // 可以理解为new了一个vue组件(只是这里叫data)，然后它的el是绑定到template去的            
+            data() {
+                // 而且这里要再套一层return，因为data是一个函数的形式
+                return {
+                    // count的初始值是1
+                    count: 1
+                }
+            }
+        });
+
+        // 2. 局部声明一个组件，需要在特定的vue实例里通过components声明
+        const buttonCounter = {
+            template: `<button v-on:click="count++">(局部)我被点击了 {{count}} 次</button>`,
+            data() {
+                return {
+                    count: 1
+                }
+            }
+        };
+
+        new Vue({
+            el: "#app",
+            data: {
+                count: 1
+            },
+            components: {
+                // 冒号左边是组件名，可以随便起，注意这里有特殊符号所以我们用单引号
+                'button-counter': buttonCounter
+            }
+        });
+    </script>
+</body>
+
+</html>
